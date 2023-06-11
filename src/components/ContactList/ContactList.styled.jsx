@@ -8,15 +8,18 @@ export const ContactsList = styled.ul`
 export const ContactsItem = styled.li`
     display: flex;
     justify-content: space-between;
+    align-items:center;
     border: 1px solid #e5d2f8;
     padding-left: 20px;
     margin-bottom: 4px;
+  
 `
 export const ContactsContainer = styled.p`
     color: white;
     font-weight: bold;
+ 
 `
-export const PhoneContainer = styled.span`
+export const PhoneContainer = styled.p`
     margin-left: 24px;
 `
 export const DeletContactBtn = styled.button`
