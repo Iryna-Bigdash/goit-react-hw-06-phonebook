@@ -1,61 +1,68 @@
-import { useState } from 'react';
-import ContactForm from '../ContactForm/ContactForm';
-import ContactList from '../ContactList/ContactList';
-import { nanoid } from 'nanoid';
-import Filter from '../Filter/Filter';
-import initialContacts from '../data/contacts.json';
-import { useLocalStorage } from '../hooks/useLocalStorage';
-import { Container, Title } from './App.styled';
+import React from 'react';
+import ContactForm from 'components/ContactForm/ContactForm';
+import ContactList from 'components/ContactList/ContactList';
+import Filter from 'components/Filter/Filter';
 
 export default function App() {
-  const [contacts, setContacts] = useLocalStorage('contacts', initialContacts);
-  const [filterContacts, setFilterContacts] = useState('');
-
-  const changeFilter = e => {
-    setFilterContacts(e.currentTarget.value);
-  };
-
-  const formSubmitHandler = ({ name, number }) => {
-    const contact = {
-      id: nanoid(),
-      name: name,
-      number: number,
-    };
-    const contactNames = contacts.map(contact => contact.name);
-    contactNames.includes(name)
-      ? alert(`${name} is already in contacts`)
-      : setContacts(prevState => [contact, ...prevState]);
-  };
-
-  const getVisibleContacts = () => {
-    const normalizedFilter = filterContacts.toLowerCase().trim();
-
-    return contacts.filter(contact =>
-      contact.name.toLowerCase().includes(normalizedFilter)
-    );
-  };
-
-  const deleteContact = contactId => {
-    setContacts(prevState =>
-      prevState.filter(contact => contact.id !== contactId)
-    );
-  };
-
-  const visibleContacts = getVisibleContacts();
-
   return (
-    <>
-      <Container>
-        <Title>Phonebook</Title>
-        <ContactForm onSubmit={formSubmitHandler} />
-        <Title>Contacts</Title>
-        <Filter value={filterContacts} onChange={changeFilter} />
-
-        <ContactList
-          contacts={visibleContacts}
-          onDeletContact={deleteContact}
-        />
-      </Container>
-    </>
+    <div>
+      <h1>Phonebook</h1>
+      <ContactForm />
+      <h2>Contacts</h2>
+      <Filter />
+      <ContactList />
+    </div>
   );
 }
+
+
+// import React from 'react';
+// import { useSelector, useDispatch } from 'react-redux';
+// import { addContact, deleteContact, setFilter } from './store';
+// import ContactForm from './ContactForm';
+// import ContactList from './ContactList';
+// import Filter from './Filter';
+
+// const App = () => {
+//   const contacts = useSelector((state) => state.contacts);
+//   const filter = useSelector((state) => state.filter);
+//   const dispatch = useDispatch();
+
+//   const formSubmitHandler = ({ name, number }) => {
+//     const contact = {
+//       id: Date.now().toString(),
+//       name,
+//       number,
+//     };
+//     const contactNames = contacts.map((contact) => contact.name.toLowerCase());
+//     if (contactNames.includes(name.toLowerCase())) {
+//       alert(`${name} is already in contacts`);
+//     } else {
+//       dispatch(addContact(contact));
+//     }
+//   };
+
+//   const deleteContactHandler = (id) => {
+//     dispatch(deleteContact(id));
+//   };
+
+//   const filterChangeHandler = (event) => {
+//     dispatch(setFilter(event.target.value));
+//   };
+
+//   const filteredContacts = contacts.filter((contact) =>
+//     contact.name.toLowerCase().includes(filter.toLowerCase())
+//   );
+
+//   return (
+//     <div>
+//       <h1>Phonebook</h1>
+//       <ContactForm onSubmit={formSubmitHandler} />
+//       <h2>Contacts</h2>
+//       <Filter value={filter} onChange={filterChangeHandler} />
+//       <ContactList contacts={filteredContacts} onDelete={deleteContactHandler} />
+//     </div>
+//   );
+// };
+
+// export default App;
